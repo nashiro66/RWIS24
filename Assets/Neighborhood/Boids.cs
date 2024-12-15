@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Neighborhood
 {
@@ -44,6 +46,14 @@ namespace Neighborhood
         private void Start()
         {
             SpawnBois();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireCube(
+                Vector3.zero,
+                2f * this.BoundSize
+            );
         }
 
         private void SpawnBois()

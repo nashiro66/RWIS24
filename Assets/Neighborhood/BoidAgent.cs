@@ -89,11 +89,7 @@ namespace Neighborhood
             }
 
             avg /= this.neighbours.Count;
-            avg = avg.normalized * Boids.Instance.MaxMoveSpeed;
-            avg -= velocity;
-            avg = Vector2.ClampMagnitude(avg, Boids.Instance.MaxTurnEffect);
-
-            return avg;
+            return avg.normalized;
         }
 
         private Vector2 Cohesion()
@@ -111,11 +107,7 @@ namespace Neighborhood
 
             avg /= this.neighbours.Count;
             avg -= (Vector2)this.transform.position;
-            avg = avg.normalized * Boids.Instance.MaxMoveSpeed;
-            avg -= velocity;
-            avg = Vector2.ClampMagnitude(avg, Boids.Instance.MaxTurnEffect);
-
-            return avg;
+            return avg.normalized;
         }
 
         private Vector2 Separation()
@@ -135,16 +127,12 @@ namespace Neighborhood
                 }
 
                 Vector2 difference = this.transform.position - neighbour.transform.position;
-                difference /= d;
+                // difference /= d;
                 avg += difference;
             }
 
             avg /= this.neighbours.Count;
-            avg = avg.normalized * Boids.Instance.MaxMoveSpeed;
-            avg -= velocity;
-            avg = Vector2.ClampMagnitude(avg, Boids.Instance.MaxTurnEffect);
-
-            return avg;
+            return avg.normalized;
         }
     }
 }
