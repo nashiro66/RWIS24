@@ -35,17 +35,40 @@ namespace Neighborhood
         [Range(0f, 1f)]
         public float AvoidanceRadius = 0.5f;
         public float MaxMoveSpeed = 2f;
-        public float MaxTurnEffect = 1f;
         [Range(1, NumBoidsMax)]
-        public int NumBoids = 100;
+        public int NumAgents = 100;
         public GameObject AgentPrefab = null;
-
-        private List<Agent> agents = new();
+        public ContactFilter2D OverlapFilter = default;
+        public float gyroPower = 1f;
+        [Header("Debug")]
+        public float gyroSpeed = 50f;
+        
+        private readonly Dictionary<int, Agent> agents = new();
 
 
         private void Start()
         {
-            SpawnBois();
+            SpawnAgents();
+            Input.gyro.enabled = true;
+        }
+        
+        private void Update()
+        {
+            var pitch = Input.gyro.rotationRate.x * Mathf.Rad2Deg;
+            var roll = Input.gyro.rotationRate.z * Mathf.Rad2Deg;
+            var gyro = new Vector3(roll, pitch);
+            
+            var horizontal = Input.GetAxis("Horizontal");
+            var vertical = Input.GetAxis("Vertical");
+
+            gyro.x += horizontal * gyroSpeed * Time.deltaTime;
+            gyro.y += vertical * gyroSpeed * Time.deltaTime;
+
+            gyro *= this.gyroPower;
+            foreach (var agent in this.agents)
+            {
+                agent.Value.Update(gyro);
+            }
         }
 
         private void OnDrawGizmos()
@@ -56,11 +79,20 @@ namespace Neighborhood
             );
         }
 
-        private void SpawnBois()
+        public void GetNeighbours(in Collider2D[] overlap, int length, Agent[] neighbours)
         {
-            for (var i = 0; i < this.NumBoids; i++)
+            for (var i = 0; i < length && i < overlap.Length; i++)
             {
-                Instantiate(
+                var id = overlap[i].gameObject.GetInstanceID();
+                neighbours[i] = this.agents[id];
+            }
+        }
+
+        private void SpawnAgents()
+        {
+            for (var i = 0; i < this.NumAgents; i++)
+            {
+                var obj = Instantiate(
                     this.AgentPrefab,
                     new Vector2(
                         Random.Range(-this.BoundSize.x, this.BoundSize.x),
@@ -69,6 +101,8 @@ namespace Neighborhood
                     Quaternion.Euler(this.AgentPrefab.transform.forward * Random.Range(0, 360)),
                     this.transform
                 );
+                
+                this.agents[obj.GetInstanceID()] = new Agent(obj.transform);
             }
         }
     }

@@ -241,15 +241,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundSize: {x: 30, y: 15}
-  Alignment: 0.95
-  Separation: 1
-  Cohesion: 0.9
-  AwarenessRadius: 4
+  Alignment: 0.775
+  Separation: 0.75
+  Cohesion: 0.6
+  AwarenessRadius: 2
   AvoidanceRadius: 0.5
-  MaxMoveSpeed: 2.5
-  MaxTurnEffect: 0.5
-  NumBoids: 100
+  MaxMoveSpeed: 1.5
+  NumAgents: 100
   AgentPrefab: {fileID: 2872569733634399598, guid: 86adae1b02f87d14ca6c60c298cc1cd9, type: 3}
+  OverlapFilter:
+    useTriggers: 1
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  gyroPower: 0.025
+  gyroSpeed: 50
 --- !u!4 &1497531902
 Transform:
   m_ObjectHideFlags: 0
