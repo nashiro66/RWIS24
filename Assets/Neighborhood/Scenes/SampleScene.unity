@@ -241,9 +241,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundSize: {x: 30, y: 15}
-  Alignment: 0.775
-  Separation: 0.75
-  Cohesion: 0.6
+  Alignment: 0.725
+  Separation: 0.8
+  Cohesion: 0.45
   AwarenessRadius: 2
   AvoidanceRadius: 0.5
   MaxMoveSpeed: 1.5
