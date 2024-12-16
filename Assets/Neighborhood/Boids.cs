@@ -40,8 +40,8 @@ namespace Neighborhood
         public GameObject AgentPrefab = null;
         public ContactFilter2D OverlapFilter = default;
         public float gyroPower = 1f;
-        [Header("Debug")]
-        public float gyroSpeed = 50f;
+        [Range(1f, 90f)]
+        public float gyroAngleLimit = 45f;
         
         private readonly Dictionary<int, Agent> agents = new();
 
@@ -54,23 +54,19 @@ namespace Neighborhood
         
         private void Update()
         {
-            var pitch = Input.gyro.rotationRate.x * Mathf.Rad2Deg;
-            var roll = Input.gyro.rotationRate.z * Mathf.Rad2Deg;
-            var gyro = new Vector3(roll, pitch);
-            
-            var horizontal = Input.GetAxis("Horizontal");
-            var vertical = Input.GetAxis("Vertical");
+            var rotRH = Input.gyro.attitude;
+            var rot = new Quaternion(-rotRH.x, -rotRH.z, -rotRH.y, rotRH.w);
+            var euler = rot.eulerAngles;
+            euler.x = this.GetGyroAngleRate(euler.x);
+            euler.z = this.GetGyroAngleRate(euler.z);
 
-            gyro.x += horizontal * gyroSpeed * Time.deltaTime;
-            gyro.y += vertical * gyroSpeed * Time.deltaTime;
-
-            gyro *= this.gyroPower;
+            var gyro = this.gyroPower * new Vector2(-euler.z, euler.x);
             foreach (var agent in this.agents)
             {
                 agent.Value.Update(gyro);
             }
         }
-
+        
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireCube(
@@ -86,6 +82,17 @@ namespace Neighborhood
                 var id = overlap[i].gameObject.GetInstanceID();
                 neighbours[i] = this.agents[id];
             }
+        }
+        
+        private float GetGyroAngleRate(float angle)
+        {
+            if (angle < 180f)
+            {
+                return Mathf.Clamp01(angle / this.gyroAngleLimit);   
+            }
+            
+            angle -= (360f - this.gyroAngleLimit);
+            return -Mathf.Clamp01(1f - angle / this.gyroAngleLimit);
         }
 
         private void SpawnAgents()
