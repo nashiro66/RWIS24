@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Shatalmic/Example/StartingExample/StartingExample.unity
     guid: 6b2934013c25947d1abad273671522b5
+  - enabled: 0
+    path: Assets/Bluetooth/Shatalmic/Example/NetworkTest.unity
+    guid: b03b4f2d4d7404569b8603a6eead368c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
