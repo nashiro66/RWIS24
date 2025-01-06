@@ -12,7 +12,7 @@ public class ScannerTestScript : MonoBehaviour
 	private bool _startScan = true;
 	private Dictionary<string, ScannedItemScript> _scannedItems;
 	public Transform _scrollViewContent;
-
+	float yPos = 0f;
 	public void OnStopScanning()
 	{
 		BluetoothLEHardwareInterface.Log ("**************** stopping");
@@ -66,10 +66,11 @@ public class ScannerTestScript : MonoBehaviour
 							if (newItem != null)
 							{
 								BluetoothLEHardwareInterface.Log ("item created: " + address);
-								newItem.transform.parent = _scrollViewContent;
+								newItem.transform.SetParent(_scrollViewContent, false);
+								newItem.transform.SetPositionAndRotation(new Vector3(0.0f, yPos, 0.0f), new Quaternion(0.0f, 0.0f, 0.0f,0.0f));
+								yPos-=200.0f;
+								
 								newItem.transform.localScale = Vector3.one;
-								newItem.transform.localPosition = Vector3.zero;
-
 								var scannedItem = newItem.GetComponent<ScannedItemScript> ();
 								if (scannedItem != null)
 								{
