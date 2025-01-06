@@ -68,7 +68,7 @@ public class ScannerTestScript : MonoBehaviour
 								BluetoothLEHardwareInterface.Log ("item created: " + address);
 								newItem.transform.SetParent(_scrollViewContent, false);
 								newItem.transform.SetPositionAndRotation(new Vector3(0.0f, yPos, 0.0f), new Quaternion(0.0f, 0.0f, 0.0f,0.0f));
-								yPos-=200.0f;
+								yPos-=100.0f;
 								
 								newItem.transform.localScale = Vector3.one;
 								var scannedItem = newItem.GetComponent<ScannedItemScript> ();
