@@ -33,8 +33,9 @@ namespace Neighborhood
         public int seed = 1357902468;
         public Color leftColor = Color.red;
         public Color rightColor = Color.green;
-        public int frameCount = 0;
+        public NetworkTestScript network;
 
+        private bool isReady = false;
         private float timer = 0f;
         private readonly Dictionary<int, Agent> agents = new();
 
@@ -55,6 +56,16 @@ namespace Neighborhood
                 return;
             }
             this.timer = 0f;
+
+            if (isReady != network.isReady)
+            {
+                isReady = network.isReady;
+                
+                if (network.isReady)
+                {
+                    this.SpawnAgents();
+                }
+            }
             
             var rotRH = Input.gyro.attitude;
             var rot = new Quaternion(-rotRH.x, -rotRH.z, -rotRH.y, rotRH.w);

@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &382576549
 Transform:
   m_ObjectHideFlags: 0
@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -294,6 +295,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2087062930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3014556c49f1495e9b87a8fc11ca4a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 817504034}
+  right: {fileID: 382576550}
+  network: {fileID: 603233661}
+--- !u!114 &603233661 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4279488445391137632, guid: 70a1217e56a5ce1488d5e0bdccbb3a0a, type: 3}
+  m_PrefabInstance: {fileID: 643208601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e205f50fba3846dfbbcbd5b8c4a4845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &643208601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -302,6 +329,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 495048395894938780, guid: 70a1217e56a5ce1488d5e0bdccbb3a0a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -281.48438
+      objectReference: {fileID: 0}
     - target: {fileID: 3744998887122654079, guid: 70a1217e56a5ce1488d5e0bdccbb3a0a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -528,6 +559,10 @@ MonoBehaviour:
     maxNormalAngle: 0
   gyroPower: 0.025
   gyroAngleLimit: 45
+  seed: 1357902468
+  leftColor: {r: 1, g: 0, b: 0, a: 1}
+  rightColor: {r: 0, g: 1, b: 0, a: 1}
+  network: {fileID: 603233661}
 --- !u!4 &1497531902
 Transform:
   m_ObjectHideFlags: 0
