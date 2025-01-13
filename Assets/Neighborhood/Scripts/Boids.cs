@@ -67,7 +67,7 @@ namespace Neighborhood
                 }
             }
 
-            var gyro1 = network.GetGyroRotation();
+            var gyro1 = network.newGyroRotation;
             var gyro2 = Input.gyro.attitude;
 
             var left = Gyro(network.isServer ? gyro2 : gyro1);
