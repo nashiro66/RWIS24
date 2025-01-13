@@ -66,17 +66,16 @@ namespace Neighborhood
                     this.SpawnAgents();
                 }
             }
-            
-            var rotRH = Input.gyro.attitude;
-            var rot = new Quaternion(-rotRH.x, -rotRH.z, -rotRH.y, rotRH.w);
-            var euler = rot.eulerAngles;
-            euler.x = this.GetGyroAngleRate(euler.x);
-            euler.z = this.GetGyroAngleRate(euler.z);
 
-            var gyro = this.gyroPower * new Vector2(-euler.z, euler.x);
+            var gyro1 = network.GetGyroRotation();
+            var gyro2 = Input.gyro.attitude;
+
+            var left = Gyro(network.isServer ? gyro2 : gyro1);
+            var right = Gyro(network.isServer ? gyro1 : gyro2);
+            
             foreach (var agent in this.agents.Values)
             {
-                agent.Update(gyro);
+                agent.Update(left, right);
             }
         }
         
@@ -95,6 +94,16 @@ namespace Neighborhood
                 var id = overlap[i].gameObject.GetInstanceID();
                 neighbours[i] = this.agents[id];
             }
+        }
+
+        private Vector2 Gyro(Quaternion rotRH)
+        {
+            var rot = new Quaternion(-rotRH.x, -rotRH.z, -rotRH.y, rotRH.w);
+            var euler = rot.eulerAngles;
+            euler.x = this.GetGyroAngleRate(euler.x);
+            euler.z = this.GetGyroAngleRate(euler.z);
+            
+            return this.gyroPower * new Vector2(-euler.z, euler.x);
         }
 
         private float GetGyroAngleRate(float angle)

@@ -27,7 +27,7 @@ namespace Neighborhood
             this.neighbours = new Agent[this.boids.NumAgents];
         }
 
-        public void Update(Vector2 gyro)
+        public void Update(Vector2 leftGyro, Vector2 rightGyro)
         {
             var pos = (Vector2)this.Transform.position;
 
@@ -46,6 +46,8 @@ namespace Neighborhood
             accel += alignment * this.boids.Alignment;
             accel += cohesion * this.boids.Cohesion;
             accel += separation * this.boids.Separation;
+
+            var gyro = pos.x < 0f ? leftGyro : rightGyro;
             
             this.velocity += accel * Boids.DeltaTime;
             this.velocity = Vector2.ClampMagnitude(velocity + gyro, this.boids.MaxMoveSpeed);
