@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Shatalmic/Example/iBeaconExample/iBeaconExample.unity
     guid: 986c516d881a846268621e2bcea5b538
   - enabled: 1
-    path: Assets/Neighborhood/Scenes/SampleScene.unity
+    path: Assets/Neighborhood/Scenes/Neighborhood.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
     path: Assets/Shatalmic/Example/StartingExample/StartingExample.unity
