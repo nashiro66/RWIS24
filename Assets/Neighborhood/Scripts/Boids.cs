@@ -9,20 +9,8 @@ namespace Neighborhood
     public class Boids : MonoBehaviour
     {
         public const int NumBoidsMax = 100;
-
-        public static Boids Instance
-        {
-            get
-            {
-                if (!InstanceInternal)
-                {
-                    InstanceInternal = FindObjectsByType<Boids>(FindObjectsSortMode.None).FirstOrDefault();
-                }
-
-                return InstanceInternal;
-            }
-        }
-        private static Boids InstanceInternal = null;
+        public const int FPS = 60;
+        public const float DeltaTime = 1f / FPS;
 
         public Vector2 BoundSize = Vector2.one;
         [Range(0f, 1f)]
@@ -42,18 +30,32 @@ namespace Neighborhood
         public float gyroPower = 1f;
         [Range(1f, 90f)]
         public float gyroAngleLimit = 45f;
-        
+        public int seed = 1357902468;
+        public Color leftColor = Color.red;
+        public Color rightColor = Color.green;
+        public int frameCount = 0;
+
+        private float timer = 0f;
         private readonly Dictionary<int, Agent> agents = new();
 
 
         private void Start()
         {
+            Random.InitState(this.seed);
+            
             SpawnAgents();
             Input.gyro.enabled = true;
         }
         
         private void Update()
         {
+            this.timer += Time.deltaTime;
+            if (this.timer < DeltaTime)
+            {
+                return;
+            }
+            this.timer = 0f;
+            
             var rotRH = Input.gyro.attitude;
             var rot = new Quaternion(-rotRH.x, -rotRH.z, -rotRH.y, rotRH.w);
             var euler = rot.eulerAngles;
@@ -61,9 +63,9 @@ namespace Neighborhood
             euler.z = this.GetGyroAngleRate(euler.z);
 
             var gyro = this.gyroPower * new Vector2(-euler.z, euler.x);
-            foreach (var agent in this.agents)
+            foreach (var agent in this.agents.Values)
             {
-                agent.Value.Update(gyro);
+                agent.Update(gyro);
             }
         }
         
@@ -83,7 +85,7 @@ namespace Neighborhood
                 neighbours[i] = this.agents[id];
             }
         }
-        
+
         private float GetGyroAngleRate(float angle)
         {
             if (angle < 180f)
@@ -97,19 +99,27 @@ namespace Neighborhood
 
         private void SpawnAgents()
         {
+            foreach (var agent in this.agents.Values)
+            {
+                Destroy(agent.Transform.gameObject);
+            }
+            this.agents.Clear();
+            
             for (var i = 0; i < this.NumAgents; i++)
             {
-                var obj = Instantiate(
-                    this.AgentPrefab,
-                    new Vector2(
-                        Random.Range(-this.BoundSize.x, this.BoundSize.x),
-                        Random.Range(-this.BoundSize.y, this.BoundSize.y)
-                    ),
-                    Quaternion.Euler(this.AgentPrefab.transform.forward * Random.Range(0, 360)),
-                    this.transform
+                var pos = new Vector2(
+                    Random.Range(-this.BoundSize.x, this.BoundSize.x),
+                    Random.Range(-this.BoundSize.y, this.BoundSize.y)
                 );
+                var rot = Quaternion.Euler(this.AgentPrefab.transform.forward * Random.Range(0, 360));
                 
-                this.agents[obj.GetInstanceID()] = new Agent(obj.transform);
+                var obj = Instantiate(
+                    this.AgentPrefab, pos, rot, this.transform
+                );
+                var agent = new Agent(this, obj.transform);
+                agent.Renderer.color = pos.x < 0f ? this.leftColor : this.rightColor;
+                
+                this.agents[obj.GetInstanceID()] = agent;
             }
         }
     }
