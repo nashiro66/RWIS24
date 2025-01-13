@@ -1,5 +1,9 @@
 # RWIS24
 
+## setup
+import bluetooth asset  
+https://drive.google.com/file/d/1NS0ljYbNWgvYcJV5dfEDfD4CvadyR5xn/view?usp=sharing
+
 ## Steps
 1. Android build
 2. Import apk to android device
